@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: optuna-postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "optuna" ]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    environment:
+      POSTGRES_USER: optuna
+      POSTGRES_PASSWORD: optuna_password
+      POSTGRES_DB: optuna_db
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - optuna-network
+
+  optuna-worker:
+    build: trainer_img
+    environment:
+      OPTUNA_DB_URL: postgresql://optuna:optuna_password@postgres/optuna_db
+    env_file:
+      - .env
+    networks:
+      - optuna-network
+    depends_on:
+      postgres:
+          condition: service_healthy
+          restart: true
+    deploy:
+      replicas: 2  # Scale the number of optuna-worker containers
+    command: python optimize.py -n 3 -ltb 0.1 -lvb 0.1 -pn FMNIST-HPO -sn FMNIST-HPO # Override with desired arguments
+
+
+networks:
+  optuna-network:
+    driver: bridge

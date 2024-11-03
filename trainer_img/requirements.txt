@@ -1,0 +1,11 @@
+# Custom index for PyTorch CPU-only packages
+#--index-url https://download.pytorch.org/whl/cpu
+#torch @ https://download.pytorch.org/whl/cpu/torch-2.4.0%2Bcpu-cp312-cp312-linux_x86_64.whl#sha256=78dbf5f2789933a7ea2dabeead4daa44679b1e0d8eb35ddb7071c8ab7b181eb3
+#torchvision @ https://download.pytorch.org/whl/cpu/torchvision-0.19.0%2Bcpu-cp312-cp312-linux_x86_64.whl#sha256=8ff4747cc9b4b889286ef51050e0f5f7ea659b9b024079f3860384337b73d192
+
+# for postgres
+psycopg2-binary
+
+lightning
+optuna
+wandb
